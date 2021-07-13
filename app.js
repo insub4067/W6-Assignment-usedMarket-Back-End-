@@ -2,13 +2,15 @@ const express = require("express");
 const mongoose = require("mongoose");
 const multer = require("multer");
 const Product = require("./models/product");
-
+const cors = require('cors');
 const app = express();
 const router = express.Router();
 
-mongoose.connect("mongodb://localhost:27017/usedMarket", {
+mongoose.connect("mongodb://localhost:27017/admin", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  user: 'test',
+  pass: 'test',
 });
 
 mongoose.set('useFindAndModify', false);
@@ -16,6 +18,7 @@ mongoose.set('useCreateIndex', true);
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
+
 
 // 이미지 저장공간 지정
 const storage = multer.diskStorage({
@@ -48,8 +51,16 @@ const upload = multer({
     fileFilter: fileFilter
 })
 
+app.use(cors({
+    origin: '*'
+}));
+
+app.get("/", async(req,res) => {
+    res.send('This is sparata!')
+})
+
 //본인확인
-router.get('/product/auth/:id', async(req, res) => {
+router.post('/product/auth/:id', async(req, res) => {
 
     const { id } = req.params;
     const { authPassword } = req.body;
@@ -69,7 +80,7 @@ router.get('/product/auth/:id', async(req, res) => {
 });
 
 //게시글 전체조회
-router.get("/product", async(req, res) => {
+router.get("/product",async(req, res) => {
 
 
     const result = await Product.find().sort("-createdAt");
@@ -104,7 +115,7 @@ router.get("/product/:id", async(req, res) => {
     const { id } = req.params;
 
     const result = await Product.findById(id)
-    res.status(200).send({});
+    res.status(200).send({ result });
 
 });
 
@@ -135,6 +146,6 @@ app.use("/api", express.urlencoded({ extended: false }), router);
 app.use(express.json());
 app.use("/images", express.static("images"));
 
-app.listen(8080, () => {
+app.listen(3000, () => {
     console.log("서버가 요청을 받을 준비가 됐어요");
   });
