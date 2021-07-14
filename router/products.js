@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
       cb(null, "./images/product");
     },
     filename: function (req, file, cb) {
-      cb(null, new Date().toLocaleString() + file.originalname);
+      cb(null, new Date().toISOString() + file.originalname);
     },
   });
   
@@ -65,28 +65,30 @@ router.post("/product/auth/:id", async (req, res) => {
   
   //게시글 등록
   router.post("/product/post", upload.single("image"), async (req, res) => {
-    const { name, password, confirmPassword, title, content, price } = req.body;
-  
+    const { name, title, content, price } = req.body;
+    // password, confirmPassword, 
     const productImage = req.file.path;
   
     const product = new Product({
       name,
-      password,
+      // password,
       title,
       content,
       price,
       productImage,
     });
   
-    if (password !== confirmPassword) {
-      res.send(400).send({
-        errorMessage: "비밀번호가 일치하지 않습니다",
-      });
-      return;
-    } else {
-      await product.save();
+    await product.save();
       res.status(200).send({});
-    }
+
+    // if (password !== confirmPassword) {
+    //   res.send(400).send({
+    //     errorMessage: "비밀번호가 일치하지 않습니다",
+    //   });
+    //   return;
+    // } else {
+      
+    // }
   });
   
   //게시글 detail 조회

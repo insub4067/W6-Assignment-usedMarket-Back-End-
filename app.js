@@ -7,8 +7,8 @@ const router = express.Router();
 mongoose.connect("mongodb://localhost:27017/admin", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-    user: 'test',
-    pass: 'test',
+    // user: 'test',
+    // pass: 'test',
 });
 
 mongoose.set("useFindAndModify", false);
@@ -43,6 +43,6 @@ app.use("/api", [productRouters]);
 
 
 
-app.listen(3000, () => {
+app.listen(4000, () => {
   console.log("서버가 요청을 받을 준비가 됐어요");
 });
