@@ -113,7 +113,7 @@ router.post("/product/auth/:id", async (req, res) => {
     const { id } = req.params;
     const { title, content, price } = req.body;
     const Image = req.file;
-  
+    const productImage = req.file.path;
     if (Image) {
       const post = await Product.findById({ _id: id });
       console.log(post);
@@ -124,9 +124,7 @@ router.post("/product/auth/:id", async (req, res) => {
           fs.unlinkSync(`./${post.productImage}`);
         }
 
-
-        const productImage = req.file.path;
-        await Product.findByIdAndUpdate(id, {
+        await Product.findByIdAndUpdate(id, { //이미지가 들어올때 업데이트하는 방식
           title,
           content,
           price,
@@ -137,8 +135,8 @@ router.post("/product/auth/:id", async (req, res) => {
         res.status(401).send({ result: "게시물을 수정할 수 없습니다" });
       }
     }
-  
-    await Product.findByIdAndUpdate(id, { title, content, price });
+    
+    await Product.findByIdAndUpdate(id, { title, content, price });//이미지가 아니들어올때 업데이트 하는 방식
     res.status(200).send({ productImage });
   });
   
