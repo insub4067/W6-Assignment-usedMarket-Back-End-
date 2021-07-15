@@ -79,7 +79,6 @@ router.post("/product/auth/:id", async (req, res) => {
       productImage,
     });
   
-    
 
     await product.save(function(err,product){
       // console.log(product.id)
@@ -124,6 +123,8 @@ router.post("/product/auth/:id", async (req, res) => {
         if (post.productImage) {
           fs.unlinkSync(`./${post.productImage}`);
         }
+
+
         const productImage = req.file.path;
         await Product.findByIdAndUpdate(id, {
           title,
@@ -138,7 +139,7 @@ router.post("/product/auth/:id", async (req, res) => {
     }
   
     await Product.findByIdAndUpdate(id, { title, content, price });
-    res.status(200).send({});
+    res.status(200).send({ productImage });
   });
   
   //게시글 삭제
