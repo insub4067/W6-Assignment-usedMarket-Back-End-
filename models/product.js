@@ -24,10 +24,14 @@ const ProductSchema = new mongoose.Schema({
     productImage:{
         type: String,
         // required: true
-    } 
+    } ,
+    createdAt : {
+        type: String,
+    }
     
 
-}, {timestamps: true});
+})
+// , {timestamps: true});
 
 
 ProductSchema.virtual('productId').get(function () {

@@ -69,7 +69,14 @@ router.post("/product/auth/:id", async (req, res) => {
     const { name, title, content, price } = req.body;
     // password, confirmPassword, 
     const productImage = req.file.path;
-  
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const dates = date.getDate();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const createdAt = `${year}년 ${month}월 ${dates}일 ${hours}:${minutes}`
+    
     const product = new Product({
       name,
       // password,
@@ -77,18 +84,17 @@ router.post("/product/auth/:id", async (req, res) => {
       content,
       price,
       productImage,
+      createdAt
     });
-  
+    
 
     await product.save(function(err,product){
       // console.log(product.id)
     })
-    
-    const result = { title, content, price, productImage }
-    result.productId = product.id
 
-
-      res.status(200).send({ result });
+    const result = { title, content, price, productImage, createdAt }
+    result.productId = product.id;
+    res.status(200).send({ result });
 
     // if (password !== confirmPassword) {
     //   res.send(400).send({

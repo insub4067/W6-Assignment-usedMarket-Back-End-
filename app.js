@@ -7,8 +7,8 @@ const router = express.Router();
 mongoose.connect("mongodb://localhost:27017/admin", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-    // user: 'test',
-    // pass: 'test',
+    user: 'test',
+    pass: 'test',
 });
 
 mongoose.set("useFindAndModify", false);
@@ -21,7 +21,8 @@ db.on("error", console.error.bind(console, "connection error:"));
 
 app.use(
   cors({
-    origin: "*",
+    // origin: "http://anabadasparta.shop",
+    origin: '*'
   })
 );
 
