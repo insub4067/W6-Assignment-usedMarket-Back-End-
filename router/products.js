@@ -5,6 +5,7 @@ const Product = require("../models/product");
 const authMiddleware = require("../middlewares/auth-Middleware");
 const registerValidator = require("../middlewares/registerValidater")
 const fs = require("fs");
+const { findOne } = require("../models/user");
 const app = express();
 const router = express.Router();
 
@@ -78,8 +79,17 @@ router.post("/product/auth/:id", async (req, res) => {
       productImage,
     });
   
-    await product.save();
-      res.status(200).send({});
+    
+
+    await product.save(function(err,product){
+      // console.log(product.id)
+    })
+    
+    const result = { title, content, price, productImage }
+    result.productId = product.id
+
+
+      res.status(200).send({ result });
 
     // if (password !== confirmPassword) {
     //   res.send(400).send({
